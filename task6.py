@@ -54,7 +54,7 @@ def doc_delete(documents, directories):
             if id["number"] == num:
                 print(f'{id["type"]} "{id["number"]}" "{id["name"]}" удален')
                 documents.pop(i)
-                print(f'документ удален с полки{directories[get_shelf_num(directories, num, True)]}')
+                print(f'документ удален из шкафа {get_shelf_num(directories, num, True)}')
                 directories[get_shelf_num(directories, num, True)].remove(num)
                 return
         print("Такого документа нету, попробуйте еще раз")
@@ -138,28 +138,55 @@ def get_person_by_doc_num(documents):
     print()
 
 
+comand_list = {
+    "1": get_person_by_doc_num,
+    "2": get_shelf_num,
+    "3": doc_list,
+    "4": doc_add,
+    "5": doc_delete,
+    "6": doc_move,
+    "7": add_shelf,
+    "Clear": clear_scren,
+    "Help": welcome_print
+}
+
+
 def comand_check(documents, directories):
     while True:
         comand = input("Введите команду:")
-        if comand == "1":
-            get_person_by_doc_num(documents)
-        elif comand == "2":
-            get_shelf_num(directories)
-        elif comand == "3":
-            doc_list(documents)
-        elif comand == "4":
-            doc_add(documents, directories)
-        elif comand == "5":
-            doc_delete(documents, directories)
-        elif comand == "6":
-            doc_move(directories)
-        elif comand == "7":
-            add_shelf(directories)
-        elif comand.capitalize() == "Clear":
-            clear_scren()
-        elif comand.capitalize() == "Help":
-            welcome_print(True)
-        elif comand.capitalize() == "Exit":
+        # if comand == "1":+++
+        #     get_person_by_doc_num(documents)
+        # elif comand == "2":+++
+        #     get_shelf_num(directories)
+        # elif comand == "3":+++
+        #     doc_list(documents)
+        # elif comand == "4":+++
+        #     doc_add(documents, directories)
+        # elif comand == "5":+++
+        #     doc_delete(documents, directories)
+        # elif comand == "6":+++
+        #     doc_move(directories)
+        # elif comand == "7":+++
+        #     add_shelf(directories)
+        # elif comand.capitalize() == "Clear":+++
+        #     clear_scren()
+        # elif comand.capitalize() == "Help":+++
+        #     welcome_print(True)
+        # elif comand.capitalize() == "Exit":+++
+        #     return
+        # else:
+        #     print("Не знаю такую команду =(")
+        if comand.capitalize() in ["Clear"]:
+            comand_list[comand.capitalize()]()
+        elif comand.capitalize() in ["Help"]:
+            comand_list[comand.capitalize()](True)
+        elif comand in ["1", "3"]:
+            comand_list[comand](documents)
+        elif comand in ["2", "6", "7"]:
+            comand_list[comand](directories)
+        elif comand in ["4", "5"]:
+            comand_list[comand](documents, directories)
+        elif comand.capitalize() in ["Exit"]:
             return
         else:
             print("Не знаю такую команду =(")
